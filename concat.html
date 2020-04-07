@@ -1,0 +1,160 @@
+<script src="/tinytest.js"></script>
+<script>
+
+'use strict'
+
+//Target
+//The concat() method is used to merge two or more arrays. This method does not change the existing arrays, but instead returns a new array.
+
+
+//function signature
+//const new_array = old_array.concat([value1[, value2[, ...[, valueN]]]])
+
+  // Prototype function 
+  // function concat(...arg) {
+  //   let newConcatArray = [];
+  //   for (let i = 0; i < arg.length; i++) {
+  //     if (Array.isArray(arg[i])) {
+  //       for (let j = 0; j < arg[i].length; j++) {
+  //         newConcatArray.push(arg[i][j]);
+  //         continue;
+  //       }
+  //     } else {
+  //       newConcatArray.push(arg[i]);
+  //     }
+
+  //   }
+  //   return newConcatArray;
+  // }
+
+
+  // Function Parameters 
+  // Arrays and/or values to concatenate into a new array. (strings, booleans, numbers) 
+
+  // Return value 
+
+  // A new Array instance.
+
+
+/*Requirement
+1.It should create a new array'
+2.It should return a new array with the elements on the array which its is called followed in order.
+3.It should accept an array as first argument and concatenate it to the new array.
+4.It should accept a second argument,if is an array the elements of that array should be concatenate to the new array.
+5.If the argument is not an array it should concatenate the argument itself.
+6.It should not recurse into nested array arguments.
+7.It should accept more than one arguments in the function.
+8.It should not alter any of the arrays provided as arguments instead it should return a copies of the same elements combined from the original arrays.
+9.It should copy object references into the new array. Both the original and new array refer to the same object.
+10.It should copy by value the data types strings, numbers and booleans to the new array.
+11.If there is any operation on the new array(except on object references), it should have no effect on the original array and vice versa.
+*/
+
+/// ...args is an Array-like object accessible inside functions that contains the values of the arguments passed to that function.
+
+///You can use arguments.length to count how many arguments the function was called with
+
+
+function concat(array, ...args){
+  let newConcatArray = [];
+
+  for (let i = 0 ; i < array.length ; i++){
+    newConcatArray.push(array[i])
+  }
+
+  for (let i = 0 ; i < args.length ; i++) {
+    //check if args is array
+    if (Array.isArray(args[i])){
+      for (let j = 0 ; j < args[i].length ; j++){
+        newConcatArray.push(args[i][j]);
+      }
+      } else {
+        newConcatArray.push(args[i]);
+      }
+  } 
+  return newConcatArray
+  }
+
+
+tests({
+  '1.It should create a new array' : function() {
+
+    let concatReturnedArray  = concat([1,2])
+    eq(Array.isArray(concatReturnedArray ), true)
+  },
+
+  '2.It should return a new array with the elements on the array which its is called followed in order.' : function() {
+    let concatReturnedArray = concat([1,2])
+    eq(concatReturnedArray [0] , 1)
+    eq(concatReturnedArray [1] , 2)
+  },
+  '3. It should accept an array as first argument and concatenate it to the new array.' : function() {
+    let concatReturnedArray  = concat([1,2,3])
+    eq(Array.isArray(concatReturnedArray), true)
+    eq(concatReturnedArray [0] , 1)
+    eq(concatReturnedArray [1] , 2)
+    eq(concatReturnedArray [2] , 3)
+  },
+
+  '4.It should accept a second argument,if is an array the elements of that array should be concatenate to the new array.' : function() {
+    let concatReturnedArray  = concat([1,2],[3,4])
+    eq(concatReturnedArray.length > 2 , true)
+    eq(concatReturnedArray[2], 3)
+    eq(concatReturnedArray[3], 4)
+  },
+
+  '5. If the argument is not an array it should concatenate the argument itself' : function() {
+    let concatReturnedArray  = concat([1,2],4)
+    eq(concatReturnedArray[2], 4)
+  },
+
+  '6. It should not recurse into nested array arguments.' : function() {
+    let concatReturnedArray  = concat([1],[2,[3,4]])
+    eq(Array.isArray(concatReturnedArray[2]), true)
+  },
+
+
+  '7.It should accept more than one arguments in the function' : function() {
+    let concatReturnedArray  = concat([1],2,[3,4],5,[6,7])
+    eq(concatReturnedArray.length > 2, true)
+  },
+
+
+  '8.It should not alter any of the arrays provided as arguments instead it should return a copies of the same elements combined from the original arrays.' : function() {
+    let testArray = [3,4]
+    let concatReturnedArray  = concat([1,2] , testArray)
+    eq(concatReturnedArray[2], 3)
+    eq(concatReturnedArray[3], 4)
+  },
+  '9.It should copy object references into the new array. Both the original and new array refer to the same object' : function() {
+    let testArray = [[3]];
+    let concatReturnedArray  = concat([1,2] , testArray)
+    concatReturnedArray[2][0] = 4;
+
+    eq(testArray[0][0], 4)
+    eq(concatReturnedArray[2][0], 4)
+  },
+  '10.It should copy by value the data types strings, numbers and booleans to the new array.' : function() {
+    let a = 3;
+    let b = true;
+    let c = 'hey'
+    let concatReturnedArray  = concat([1,2] , a, b, c)
+    concatReturnedArray[2] = 3
+
+    eq(a, 3)
+    eq(concatReturnedArray[2], 3)
+    eq(concatReturnedArray[3], true)
+    eq(concatReturnedArray[4], 'hey')
+  },
+  '11.If there is any operation on the new array(except on object references), it should have no effect on the original array and vice versa' : function() {
+    let testArray = [3,4];
+    let concatReturnedArray = concat([1,2], testArray)
+    concatReturnedArray.push(5)
+
+    eq(concatReturnedArray[4], 5)
+    eq(testArray.length, 2)
+  },
+})
+
+
+</script>
