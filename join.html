@@ -1,0 +1,107 @@
+<script src="/tinytest.js"></script>
+<script>
+
+//Target
+//The join() method creates and returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas or a specified separator string. If the array has only one item, then that item will be returned without using the separator.
+
+
+
+function join(array, separator) {
+  let returnedJoinString = ''
+
+
+  if (array === undefined || array === null || array === []) {
+    return '';
+    }
+    
+  if (array.length === 0) {
+    return '';
+    }
+
+for (let i = 0 ; i < array.length ; i++){
+  if (array[i] !== returnedJoinString) {
+
+    if(separator){
+      if (i === array.length - 1){
+        return  returnedJoinString = returnedJoinString +  array[i]
+    } 
+      returnedJoinString = returnedJoinString + array[i]+ separator 
+  }
+
+    if (separator === undefined){
+      if (i === array.length - 1){
+        return returnedJoinString = returnedJoinString +  array[i]
+      }
+      returnedJoinString = returnedJoinString + array[i] + ','
+  }
+    if (separator === "") {
+      if (i === array.length - 1){
+        return returnedJoinString = returnedJoinString +  array[i]
+      }
+      returnedJoinString = returnedJoinString + array[i]
+  }
+}
+}
+}
+
+//arr.join([separator])
+
+//Parameters
+//separator
+
+//Return value
+//A string with all array elements joined. If arr.length is 0, the empty string is returned.
+
+
+//Requirement
+//1. It should return new string by concatenating all of the elements in an array
+//2. Each pair should be separated by separator such as ('-') , (' ')
+//3. The separator should be converted to a string
+//4. if no seperator provided, the element should be seperated with a comma (",")
+//5. If separator is an empty string, all elements are joined without any characters in between them.
+//6. If an element is undefined, null or an empty array [], it is converted to an empty string.
+
+
+tests({
+
+'1. It should return new string by concatenating all of the elements in an array' : function() {
+  let returnedJoinValue = join(['Fire' ,'Water' ,'Earth' , 'Wind'])
+  eq(returnedJoinValue, 'Fire,Water,Earth,Wind')
+  eq(typeof returnedJoinValue === 'string', true)
+},
+"2. Each pair should be separated by separator such as (-) , (' ')" : function() {
+  let returnedJoinValue1 = join(['Fire' ,'Water' ,'Earth' , 'Wind'] , "-")
+  let returnedJoinValue2 = join(['Fire' ,'Water' ,'Earth' , 'Wind'] , "+")
+  eq(returnedJoinValue1, 'Fire-Water-Earth-Wind')
+  eq(returnedJoinValue2, 'Fire+Water+Earth+Wind')
+},
+'3. The separator should be converted to a string' : function() {
+  let returnedJoinValue = join(['Fire' ,'Water' ,'Earth' , 'Wind'] , "-")
+  eq(typeof returnedJoinValue, 'string')
+},
+'4. if no seperator provided, the element should be seperated with a comma (",")' : function() {
+  let returnedJoinValue = join(['Fire' ,'Water' ,'Earth' , 'Wind'])
+  eq(returnedJoinValue, 'Fire,Water,Earth,Wind')
+},
+'5. If separator is an empty string, all elements are joined without any characters in between them.' : function() {
+  let returnedJoinValue = join(['Fire' ,'Water' ,'Earth' , 'Wind'], '')
+  eq(returnedJoinValue, 'FireWaterEarthWind')
+},
+'6. If an element is undefined, null or an empty array [], it is converted to an empty string.' : function() {
+  let returnedJoinValue1 = join(undefined)
+  let returnedJoinValue2 = join(null)
+  let returnedJoinValue3 = join([])
+  eq(returnedJoinValue1, '')
+  eq(returnedJoinValue2, '')
+  eq(returnedJoinValue3, '')
+}
+// '' : function() {
+//   fail();
+// }
+
+
+})
+
+
+
+</script>

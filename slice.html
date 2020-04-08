@@ -1,0 +1,155 @@
+<script src="/tinytest.js"></script>
+<script>
+
+// Target
+// The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included) where begin and end represent the index of items in that array. The original array will not be modified.
+
+
+// Prototype Function
+function slice(array, indexToStart, indexToEnd) {
+  let sliceReturnArray = [];
+  let length = array.length
+
+if (indexToStart < 0){
+  if(length + indexToStart < 0){
+    indexToStart = 0
+     } else {
+    indexToStart = length + indexToStart
+    } 
+  }
+
+  if (indexToStart === undefined){
+    indexToStart = 0
+  }
+
+  if (indexToStart > length){
+    return [];
+  }
+
+  if(indexToEnd < 0){
+    indexToEnd = length + indexToEnd
+  }
+
+  if (indexToEnd === undefined || indexToEnd  > length){
+  indexToEnd  = length
+  }
+
+  for (i = indexToStart  ; i < indexToEnd ; i++){
+    sliceReturnArray.push(array[i])
+  }
+    return sliceReturnArray
+  }
+
+
+//arr.slice([begin[, end]])
+
+//Parameters
+//array
+//begin
+//end
+
+// Return value
+// A new array containing the extracted elements.
+
+//Requirement
+// 1.It should copy original array into a new array, not alter
+// 2.It should copy object references from the original array, Both refer to the same object
+// 3.It should copy value of strings, numbers and booleans value into a new array
+// 4.If changes string, number, or boolean value in one array do not affect the other array.
+// 5.It should not be affected if a new element is added to either array 
+// 6.If indexToStart is negative, the computed index is calculated to be used as a position in the array at which to begin the extraction  
+// 7. If the indexToStart is provided and is negative, and  the computed index is greater than array.length startInde should start at 0 index.
+// 8.if indexToStart is undefined, it should begins from index 0
+// 9.If indexToStart is greater than the index range of the sequence, return an empty array
+// 10.It should extract up to but not including indexToEnd element
+// 11.If indexToEnd is negative, the computed index is calculated to be used as position in the array at which to end the extraction
+// 12.If indexToEnd is not provided, it should be array.length as default.
+// 13.If indexToEnd is greater than the length of the sequence, slice extracts through to the end of the array (arr.length)
+// 14. If the indexToEnd is provided and is negative, and  the computed index is greater than array.length startInde should start at 0 index.
+
+
+tests({
+'1.It should copy original array into a new array, not alter' : function(){
+  let sliceReturnedValue = slice([1,2,3,4],0, 4)
+  eq(sliceReturnedValue.length, 4)
+  eq(Array.isArray(sliceReturnedValue), true);
+},
+'2.It should copy object references from the original array, Both refer to the same object' : function(){
+  let testArray = [1,2,3,4]
+  let sliceReturnedValue = slice(testArray,0, 4)
+  eq(testArray[1] , sliceReturnedValue[1])
+},
+
+'3.It should copy value of strings, numbers and booleans value into a new array' : function(){
+  let testArray = [1,'b',true ,2 ]
+  let sliceReturnedValue = slice(testArray,0, 4)
+  eq(sliceReturnedValue[1], 'b')
+  eq(sliceReturnedValue[2], true)
+},
+'4.If changes string, number, or boolean value in one array do not affect the other array.' : function(){
+  let testArray = [1 ,2 ,3 ,4 ]
+  let sliceReturnedValue = slice(testArray,0, 4)
+  testArray[1] = 4
+  sliceReturnedValue[3] = 2
+
+  eq(sliceReturnedValue[1], 2)
+  eq(testArray[3], 4)
+},
+'5.It should not be affected if a new element is added to either array ' : function(){
+  let testArray = [1 ,2 ,3 ,4 ]
+  let sliceReturnedValue = slice(testArray,0, 4)
+  testArray.push(5)
+  sliceReturnedValue.push(6)
+
+  eq(testArray[4], 5)
+  eq(sliceReturnedValue[4], 6)
+},
+'6.If indexToStart is negative, the computed index is calculated to be used as a position in the array at which to begin the extraction  ' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5],-2)
+  eq(sliceReturnedValue[0], 4)
+  eq(sliceReturnedValue[1], 5)
+},
+'7. If the indexToStart is provided and is negative, and  the computed index is greater than array.length startInde should start at 0 index.': function () {
+    let sliceReturnedValue = slice([1, 2, 3], -15);
+    eq(sliceReturnedValue[0], 1);
+    eq(sliceReturnedValue[2], 3);
+  },
+'8.if indexToStart is undefined, it should begins from index 0' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5], undefined);
+  eq(sliceReturnedValue.length, 5)
+},
+'9.If indexToStart is greater than the index range of the sequence, return an empty array' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5], 9);
+  eq(sliceReturnedValue.length, 0)
+  eq(Array.isArray(sliceReturnedValue), true)
+},
+'10.It should extract up to but not including indexToEnd element' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5], 0, 4)
+  eq(sliceReturnedValue[3], 4)
+  eq(sliceReturnedValue[4], undefined)
+},
+'11.If indexToEnd is negative, the computed index is calculated to be used as position in the array at which to end the extraction' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5], 1, -2)
+  eq(sliceReturnedValue[0], 2)
+  eq(sliceReturnedValue[1], 3)
+  eq(sliceReturnedValue[2] === undefined, true)
+},
+'12.If indexToEnd is not provided, it should be array.length as default.' : function(){
+  let sliceReturnedValue = slice([1 ,2 ,3 ,4 ,5], 1)
+  eq(sliceReturnedValue.length, 4)
+},
+'13.If indexToEnd is greater than the length of the sequence, slice extracts through to the end of the array (arr.length)' : function(){
+  let sliceReturnedValue = slice([1, 2, 3, 4, 5],1 , 15);
+  eq(sliceReturnedValue.length, 4)
+  eq(sliceReturnedValue[0], 2)
+  eq(sliceReturnedValue[1], 3)
+  eq(sliceReturnedValue[2], 4)
+},
+'14. If the indexToEnd is provided and is negative, and  the computed index is greater than array.length startInde should start at 0 index.': function () {
+    let sliceReturnedValue = slice([1 ,2 ,3 ,4 ],1 ,15 );
+    eq(sliceReturnedValue[0], 2);
+    eq(sliceReturnedValue[1], 3);
+  }
+})
+
+</script>
