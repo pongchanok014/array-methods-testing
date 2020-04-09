@@ -1,0 +1,65 @@
+<script src="/tinytest.js"></script>
+<script>
+
+// Target 
+// The push() method adds one or more elements to the end of an array and returns the new length of the array.
+
+//arr.push(element1[, ...[, elementN]])
+
+
+//prototype function
+
+function push(array) {
+  let arrayIndexToStart = array.length
+
+for (let i = 1 ; i < arguments.length ; i++ , arrayIndexToStart++) {
+  array[arrayIndexToStart] = arguments[i];
+}
+return arrayIndexToStart 
+}
+
+// Parameters
+// elementN
+
+// Return value
+// The new length property of the object upon which the method was called.
+
+//reqirement
+//1. It should append values to an array which contain new length
+//2. It should rely on length property to  determine where to start inserting the given values
+//3. If the length property cannot be converted into a number, the index used is 0.
+//4. If no length exist, it should create length
+//5. strings element should be immutable
+//6. It should be used with call() on objects resembling arrays.
+//7. It should be used with applay() on objects resembling arrays.
+
+tests({
+
+'1. It should append values to the original array which also contain new length' : function() {
+  let testArray = [1 ,2 ,3 ,4]
+  let pushReturnedValue = push(testArray, 5)
+  eq(testArray[4], 5)
+  eq(pushReturnedValue, 5);
+
+},
+'2. It should append more than one value to the original array ' : function() {
+  let testArray = [1 ,2 ,3 ,4]
+  let pushReturnedValue = push(testArray, 5 ,6 ,7 ,8)
+  eq(testArray[4], 5)
+  eq(testArray.length, 8);
+},
+
+'3. If the length property cannot be converted into a number, the index used is 0.' : function() {
+  let testArray = []
+  push(testArray, 1)
+
+  eq(testArray[0], 1)
+},
+'4. If no length exist, it should create length' : function() {
+  let testArray = []
+  push(testArray, 1)
+  eq(testArray.length, 1)
+}
+
+})
+</script>

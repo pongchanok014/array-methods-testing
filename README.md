@@ -30,11 +30,11 @@ Accessors:
 
 Mutators
 
--   [ ] Array.prototype.push()
--   [ ] Array.prototype.pop()
--   [ ] Array.prototype.shift()
--   [ ] Array.prototype.unshift()
--   [ ] Array.prototype.fill()
+-   [x] Array.prototype.push()
+-   [x] Array.prototype.pop()
+-   [x] Array.prototype.shift()
+-   [x] Array.prototype.unshift()
+-   [x] Array.prototype.fill()
 -   [a] Array.prototype.reverse()
 -   [ ] Array.prototype.copyWithin()
 -   [ ] Array.prototype.sort()

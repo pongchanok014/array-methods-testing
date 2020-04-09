@@ -1,0 +1,55 @@
+<script src="/tinytest.js"></script>
+<script>
+
+//Target
+//The pop() method removes the last element from an array and returns that element. This method changes the length of the array.
+
+//arr.pop()
+
+function pop(array) {
+let indexToStart = array.length - 1
+
+
+//if empty array 
+if (array.length === 0) {
+  return undefined;
+}
+
+return array.splice(indexToStart , 1)
+
+//return Array.prototype.pop.apply(array) //
+}
+
+
+//requirement
+//1. It should remove the last element from the array and returns that value to the caller
+//2. if array do not contain a length, property to remove should mean thee last element
+//3. if an empty array, It should retuen undefined 
+
+
+//Return value
+//The removed element from the array; undefined if the array is empty.
+
+
+tests({
+
+'1.It should remove the last element from the array and returns that value to the caller' : function(){
+  let testArray = [1 ,2 ,3 ,4]
+  let popReturnedValue =  pop(testArray)
+  eq(popReturnedValue, 4)
+},
+'2.It should remove the last element from the array and changes the length of the original array.' : function(){
+  let testArray = [1 ,2 ,3 ,4]
+  let popReturnedValue =  pop(testArray)
+  eq(testArray.length, 3)
+},
+
+
+'3.if an empty array, It should return undefined ' : function(){
+  debugger
+  let popReturnedValue =  pop([])
+  eq(popReturnedValue, undefined)
+}
+})
+
+</script>

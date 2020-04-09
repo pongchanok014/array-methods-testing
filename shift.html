@@ -1,0 +1,76 @@
+<script src="/tinytest.js"></script>
+<script>
+
+// Target
+// The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.
+
+function shift(array){
+let firstElementIndex = 0
+let firstElementValue = array[0]
+
+if (firstElementValue === undefined) {
+  return undefined
+}
+
+return array.splice(firstElementIndex,1)
+}
+
+function shiftWhileLoop(array) {
+  let whileLoopReturnedArray = [];
+
+  while( (i = array.shift()) !== undefined ) {
+    whileLoopReturnedArray.push(i)
+}
+return whileLoopReturnedArray;
+}
+
+
+
+//arr.shift()
+
+//1. It should remove the first element from the array and returns that removed element
+//2. It should change the length of the array.
+//3. It should shifts the values at consecutive indexes down from original array
+//4. It should return undefined if the array is empty.
+//5. If no length, remove last in a series of consecutive
+//6. It should be used with while loop to remove the next element from an array until it is empty.
+//7. It should be used with call and apply to objects resembling arrays.
+
+tests({
+
+'1. It should remove the first element from the array' : function() {
+  let testArray = [1,2,3,4]
+  shift(testArray)
+  eq(testArray[0] !== 1 , true)
+},
+'2. It should returns the removed element' : function() {
+  let testArray = [1,2,3,4]
+  let shiftRetrunedValue = shift(testArray)
+  eq(shiftRetrunedValue , 1)
+},
+'3 It should change the length of the array.' : function() {
+  let testArray = [1,2,3,4]
+  shift(testArray)
+  eq(testArray.length , 3)
+},
+'4. It should shifts the values at consecutive indexes down from original array' : function() {
+  let testArray = [1,2,3,4]
+  shift(testArray)
+  eq(testArray[0] , 2)
+  eq(testArray[1] , 3)
+  eq(testArray[2] , 4)
+},
+'5. It should return undefined if the array is empty.' : function() {
+  let testArray = []
+  let shiftReturnedValue = shift(testArray)
+  eq(shiftReturnedValue, undefined)
+},
+'6. It should be used with while loop to remove the next element from an array until it is empty.' : function() {
+  let testArray = [1,2,3,4]
+  let shiftWhileLoopReturnedValue = shiftWhileLoop(testArray)
+  eq(shiftWhileLoopReturnedValue.length, 4)
+  eq(Array.isArray(shiftWhileLoopReturnedValue), true)
+},
+})
+
+</script>

@@ -1,0 +1,64 @@
+<script src="/tinytest.js"></script>
+<script>
+
+// The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.
+
+
+//arr.unshift(element1[, ...[, elementN]])
+
+//prototype function
+
+function unshift(array) {
+  let indexToStart = 0;
+
+for (i = arguments.length - 1; 0 < i ; i--) { 
+  // arguments - 1 because it also applies zero-based numerical properties
+  array.splice(indexToStart , 0 , arguments[i])
+}
+
+    return array
+  }
+
+
+// Parameters
+// elementN
+
+
+// Return value
+// The new length property of the object upon which the method was called.
+
+
+//1.It should adds one or more elements to the beginning of an array and returns the new length of the array.
+//2. if multiple elements are passed as parameters, they should be inserted in chunk in the exact same order they were passed as parameters.
+//3. if call it n times with 1 argument , it should not the same result as multiple elements parameters
+
+tests({
+
+  '1.It should adds one or more elements to the beginning of an array and returns the new length of the array.' : function() {
+    let testArray = [2,3,4];
+    unshift(testArray , 1)
+    eq(testArray.length, 4)
+    eq(testArray[0], 1)
+  },
+  '2. if multiple elements are passed as parameters, they should be inserted in chunk in the exact same order they were passed as parameters.' : function() {
+    debugger;
+    let testArray = [4,5,6];
+    unshift(testArray , 1 ,2 ,3)
+    eq(testArray.length, 6)
+    eq(testArray[0],1)
+    eq(testArray[1],2)
+    eq(testArray[2],3)
+  },
+  '3. if call it n times with 1 argument , it should not the same result as multiple elements parameters' : function() {
+    let testArray = [4,5,6];
+    unshift(testArray, 1)
+    unshift(testArray, 2)
+    unshift(testArray, 3)
+    eq(testArray[0],3)
+    eq(testArray[1],2)
+    eq(testArray[2],1)
+  },
+})
+
+
+</script>

@@ -1,0 +1,118 @@
+<script src="/tinytest.js"></script>
+<script>
+
+
+//The fill() method changes all elements in an array to a static value, from a start index (default 0) to an end index (default array.length). It returns the modified array.
+
+//arr.fill(value[, start[, end]])
+
+
+
+//prototype function
+
+function fill(array , element , indexToStart , indexToEnd) {
+
+if (indexToStart === undefined) {
+  indexToStart = 0
+}
+if (indexToEnd === undefined) {
+  indexToEnd = array.length
+}
+
+if (indexToStart  < 0 ){
+indexToStart = array.length + indexToStart
+}
+
+if (indexToEnd < 0){
+  indexToEnd = array.length + indexToEnd;
+}
+
+for (i = indexToStart ; i < indexToEnd ; i++ ) {
+  array[i] = element
+}
+return array
+}
+
+// Parameters
+// value
+// start
+// end 
+
+// Return value
+// The modified array, filled with value.
+
+//Requirement
+//1. It should change all elements in an array to a static value.
+
+//2. if start is provided but no end provided, begin the changes on the starting index and end at array.length
+
+//3. if start is negative, it is treated as array.length + start.
+
+//4. if end is provided , end the changes on the the ending index.
+//5. If end is negative, it is treated as array.length + end.
+
+//6.If the first parameter is an object, each slot in the array should reference that object.
+
+tests({
+
+  '1. It should change all elements in an array to a static value.' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4)
+    eq(testArray[0], 4)
+    eq(testArray[1], 4)
+    eq(testArray[2], 4)
+  },
+  '2. if start is provided but no end provided, begin the changes on the starting index and end at array.length' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , 1)
+    eq(testArray[0], 1)
+    eq(testArray[1], 4)
+    eq(testArray[2], 4)
+
+  },
+  '3. if start is negative, it is treated as array.length + start.' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , -2 )
+    eq(testArray[1], 4)
+    eq(testArray[2], 4)
+  },
+  '4. if end is provided , end the changes on the the ending index.' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , 0 , 2)
+    eq(testArray[0], 4)
+    eq(testArray[1], 4)
+    eq(testArray[2], 3)
+  },
+  '5.If end is negative, it is treated as array.length + end.' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , 0 , -2)
+    eq(testArray[0], 4)
+    eq(testArray[1], 2)
+    eq(testArray[2], 3)
+  },
+  '6.If start and end is greater than array.length, it should not change the array' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , 3 , 5)
+    eq(testArray[0], 1)
+    eq(testArray[1], 2)
+    eq(testArray[2], 3)
+  },
+  '7.If start and end is NaN, it should not change the array' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , 4 , NaN , NaN)
+    eq(testArray[0], 1)
+    eq(testArray[1], 2)
+    eq(testArray[2], 3)
+  },
+  '8.If the first parameter is an object, each slot in the array should reference that object.' : function() {
+    let testArray = [1,2,3]
+    fill(testArray , {hi : 'hi'} , 0 )
+    eq(testArray[0].hi, 'hi')
+    eq(testArray[1].hi, 'hi')
+    eq(testArray[2].hi, 'hi')
+  }
+
+})
+
+
+</script>
