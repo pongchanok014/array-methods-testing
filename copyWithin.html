@@ -1,0 +1,183 @@
+<script src="/tinytest.js"></script>
+<script>
+
+//The copyWithin() method shallow copies part of an array to another location in the same array and returns it without modifying its length.
+
+
+//arr.copyWithin(target[, start[, end]])
+
+
+
+//Prototype Function
+// function copyWithin(array , target , startCopyingIndex, endCopyingIndex) {
+
+// for ( i = 0; startCopyingIndex < endCopyingIndex ; startCopyingIndex++ , target++ , i++) {
+//   if(target === array.length) {
+//     return array
+//   }
+//     let el = array[startCopyingIndex + i]     
+//     array.splice(target , 0 ,el )
+//   }
+// return array
+// }
+
+function copyWithin(array , target , startCopyingIndex, endCopyingIndex) {
+  if (target < 0 ) {
+  target = array.length + target
+}
+if (startCopyingIndex < 0 ) {
+  startCopyingIndex = array.length + startCopyingIndex
+}
+if (endCopyingIndex< 0 ) {
+  endCopyingIndex= array.length + endCopyingIndex
+}
+
+if (target > startCopyingIndex) {
+  endCopyingIndex == array.length
+}
+
+if(startCopyingIndex === undefined) {
+  startCopyingIndex = 0
+}
+if(endCopyingIndex === undefined) {
+  endCopyingIndex = array.length
+}
+
+for (; startCopyingIndex < endCopyingIndex ; startCopyingIndex++ , target++ ) {
+  //[1,2,3,4,5]
+  if(target === array.length) {
+    return array
+  }
+    let el = array[startCopyingIndex]
+    array[target] = el
+
+  }
+return array
+}
+
+
+//Parameters
+// target
+// start
+// end
+
+
+//Return value
+//The modified array.
+
+
+//requirement
+//1. it should change part of the array to another location in place without modifying arrays length.
+
+//2. if target , it should start changing at target's index
+//3. if target is negetive, it should be counted from the end (arr.length + target)
+//4. If target is at or greater than arr.length, nothing will be copied.
+//5. If target is positioned after start, the copied should start at startToIndex , begin element at target , and end at arr.length
+
+//6.if start, it should start copying element from startCopyingIndex 
+//7.if start is negetive , startCopyingIndex should be counted from the end. (arr.length + indexToStart)
+//8. if no start, startCopyingIndex should equal to index 0
+
+//9.if end, it should end copying up to but not including end
+//10. if end is negative, it should be counted from the end (arr.length + indexToEnd)
+//11 if no end , copy should be applied until the last index(arr.length)
+
+tests ({
+
+'1.it should change part of the array to another location in place without modifying arrays length.' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 0 , 1 , 2)
+  eq(testArray[0], 2)
+  eq(testArray.length, 5)
+},
+"2. if target , it should start changing at target's index" : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 1 , 2 , 4)
+  eq(testArray[0], 1)
+  eq(testArray[1], 3)
+  eq(testArray[2], 4)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'3. if target is negetive, it should be counted from the end (arr.length + target)' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , -2)
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+  eq(testArray[3], 1)
+  eq(testArray[4], 2)
+},
+'4. If target is at or greater than arr.length, nothing will be copied.' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 6)
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'5. If target is positioned after start, the copied should start at startToIndex , begin element at target , and end at arr.length' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 2 , 1)
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 2)
+  eq(testArray[3], 2)
+  eq(testArray[4], 2)
+},
+'6.if start, it should start copying element from that index' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 0 , 4)
+  eq(testArray[0] , 5)
+},
+'7.if start is negetive , it should be counted from the end. (arr.length + indexToStart)' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 0 , -2)
+  eq(testArray[0] , 4)
+  eq(testArray[1] , 5)
+  eq(testArray[2] , 3)
+  eq(testArray[3] , 4)
+  eq(testArray[4] , 5)
+},
+'8. if no start, start copying element from index 0' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 3 )
+  eq(testArray[0],1)
+  eq(testArray[1],2)
+  eq(testArray[2],3)
+  eq(testArray[3],1)
+  eq(testArray[4],2)
+},
+'9.if end, it should end copying up to but not including end' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 0 , 2 , 3 )
+  eq(testArray[0], 3)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'10. if end is negative, it should be counted from the end (arr.length + indexToEnd)' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 0 , 2 , -1 )
+  eq(testArray[0], 3)
+  eq(testArray[1], 4)
+  eq(testArray[2], 3)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'11 if no end , copy should be applied until the last index(arr.length)' : function() {
+  let testArray = [1,2,3,4,5]
+  copyWithin(testArray , 1 , 3)
+  eq(testArray[0], 1)
+  eq(testArray[1], 4)
+  eq(testArray[2], 5)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+}
+})
+
+
+
+</script>
