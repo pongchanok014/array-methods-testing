@@ -1,11 +1,13 @@
-<script src="/tinytest.js"></script>
+<script src="../tinytest.js"></script>
 <script>
 
+'use strict'
+
+//tested 8 success 8
 
 //The fill() method changes all elements in an array to a static value, from a start index (default 0) to an end index (default array.length). It returns the modified array.
 
 //arr.fill(value[, start[, end]])
-
 
 
 //prototype function
@@ -27,7 +29,7 @@ if (indexToEnd < 0){
   indexToEnd = array.length + indexToEnd;
 }
 
-for (i = indexToStart ; i < indexToEnd ; i++ ) {
+for (let i = indexToStart ; i < indexToEnd ; i++ ) {
   array[i] = element
 }
 return array
@@ -43,15 +45,13 @@ return array
 
 //Requirement
 //1. It should change all elements in an array to a static value.
-
 //2. if start is provided but no end provided, begin the changes on the starting index and end at array.length
-
 //3. if start is negative, it is treated as array.length + start.
-
 //4. if end is provided , end the changes on the the ending index.
-//5. If end is negative, it is treated as array.length + end.
-
-//6.If the first parameter is an object, each slot in the array should reference that object.
+//5.If end is negative, it is treated as array.length + end.
+//6.If start and end is greater than array.length, it should not change the array
+//7.If start and end is NaN, it should not change the array
+//8.If the first parameter is an object, each slot in the array should reference that object.
 
 tests({
 

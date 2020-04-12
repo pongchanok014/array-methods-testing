@@ -1,0 +1,219 @@
+<script src="../tinytest.js"></script>
+<script>
+
+  'use strict'
+  //tested 11 success 11
+
+//Target
+//The splice() method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
+
+
+//let arrDeletedItems = array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+
+
+//Prototype function
+
+// function splice(array, indexStartToChange , deleteCount , ...args) {
+
+// // if indexStartToChange  is negative
+// if (indexStartToChange < 0) {
+//   if(array.length + indexStartToChange < 0){
+//     indexStartToChange = 0
+//   }
+//   else {
+//     indexStartToChange = array.length + indexStartToChange;
+//   }
+// }
+// // if indexStartToChange is greater than the length
+// if (indexStartToChange > array.length) {
+//   for (i = 0 ; i < args.length ; i++) {
+//     array.push(args[i])
+//   }
+// }
+
+// if (deleteCount === undefined || deleteCount > array.length - indexStartToChange) {
+//   deleteCount = array.length - indexStartToChange
+// }
+
+// // if only indexStartToChange  is provided
+// for (i = args.length -1  ; 0 < i ; i--) {
+// array.splice(indexStartToChange , deleteCount , args[i])
+// }
+// return array
+// }
+
+
+function splice(array, indexStartToChange , deleteCount , ...args) {
+ let spliceReturnedArray;
+
+//if indexStartToChange  is negative
+  if (indexStartToChange < 0) {
+    if(array.length + indexStartToChange < 0){
+      indexStartToChange = 0
+    }
+    else {
+      indexStartToChange = array.length + indexStartToChange;
+    }
+  }
+  // if indexStartToChange is greater than the length
+  if (indexStartToChange > array.length) {
+    for (let i = 0 ; i < args.length ; i++) {
+      array.push(args[i])
+    }
+  }
+
+
+  if (deleteCount > array.length - indexStartToChange) {
+    deleteCount = array.length - indexStartToChange
+  }
+
+  if (deleteCount === 0) {
+    if (args.length > 0) {
+      for (let i = args.length - 1 ; 0 <= i ; i--) {
+        array.splice(indexStartToChange , deleteCount , args[i])
+        } 
+      } else {
+        array.splice(indexStartToChange , deleteCount)
+        return array
+    } 
+    return array
+  }
+    
+    //8.if new element provided, it should add that element to the array beginning from indexStartToChange' 
+
+    if (deleteCount){
+      if (args.length > 0) {
+        for (let i = args.length- 1  ; 0 <= i ; i--) {
+          array.splice(indexStartToChange , deleteCount , args[i])
+          return array       
+          } 
+        } else {
+      array.splice(indexStartToChange, deleteCount)
+      return array
+      }
+    } 
+
+    array.splice(indexStartToChange)
+
+ return array
+}
+
+
+
+//reqiurement
+// '1. if indexStartToChange provided , start removing the elements from indexStartToChange.'
+// '2. if indexStartToChange is greater than the length of the array, it should be set to arr.length and add as many element as item[n*] provided'
+// '3. if indexStartToChange is negative , begin that many elements from the end of the array '
+// '4. if calculated indexStartToChange is less than 0 , indexStartToChange will begin from index 0'
+// '5.if deleteCount provided, it should remove the number of elements in the array from indexStartToChange.'
+// '6.if deleteCount is 0 or negative , no elements are removed'
+// '7.if deleteCount > 0 and no new element provided , only remove element'
+// '8.if deleteCount is larger than elements left[array.length - start] , then all the elements from indexStartToChange to the end of the array will be deleted.'
+// '9.if new element provided, it should replace that element to the removed element'
+// '10.if new element provided, it should replace that element to the removed element' 
+// '11.if new element provided, it should add that element to the array beginning from indexStartToChange'
+
+// Return value
+// An array containing the deleted elements.
+
+// If only one element is removed, an array of one element is returned.
+
+// If no elements are removed, an empty array is returned.
+
+
+tests({
+
+'1. if indexStartToChange provided , start removing the elements from indexStartToChange.' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray, 1)
+  eq(testArray[0], 1)
+  eq(testArray[1], undefined)
+  eq(testArray[2], undefined)
+},
+'2. if indexStartToChange is greater than the length of the array, it should be set to arr.length and add as many element as item[n*] provided' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray, 6 , 0 , 6 )
+  eq(testArray[5], 6)
+},
+'3. if indexStartToChange is negative , begin that many elements from the end of the array ' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray, -1)
+  eq(testArray[4], undefined)
+},
+'4. if calculated indexStartToChange is less than 0 , indexStartToChange will begin from index 0' : function(){
+  let testArray = [1,2,3,4,5]
+  let spliceReturnedArray = splice(testArray, -7)
+
+  eq(testArray[0], undefined)
+},
+'5.if deleteCount provided, it should remove the number of elements in the array from indexStartToChange.' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray, 1 , 2) //expect [1,4,5]
+  eq(testArray[0], 1)
+  eq(testArray[1], 4)
+  eq(testArray[2], 5)
+},
+'6.if deleteCount is 0 or negative , no elements are removed' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray, 1 , 0)
+
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'7.if deleteCount > 0 and no new element provided , only remove element' : function(){
+  let testArray = [1,4,2] 
+  splice(testArray ,1 ,1)
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], undefined)
+},
+'8.if deleteCount is larger than elements left[array.length - start] , then all the elements from indexStartToChange to the end of the array will be deleted.' : function(){
+  let testArray = [1,2,3,4,5]
+  splice(testArray , 2 , 6)
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], undefined)
+  eq(testArray[3], undefined)
+  eq(testArray[4], undefined)
+},
+'9.if new element provided, it should replace that element to the removed element' : function(){
+  let testArray = [1,5,3] 
+  splice(testArray ,1 ,1 ,2 )  // expect [1,2,3]
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+},
+'10.if new element provided, it should add that element to the array beginning from indexStartToChange' : function(){
+  let testArray = [1,3,5] 
+  splice(testArray ,1 ,0 ,2 )  // expext [1,2,3,5]
+  splice(testArray ,3 ,0 ,4 )  // expext [1,2,3,4,5]
+  eq(testArray[0], 1)
+  eq(testArray[1], 2)
+  eq(testArray[2], 3)
+  eq(testArray[3], 4)
+  eq(testArray[4], 5)
+},
+'11.it should add more than one element to the array beginning from indexStartToChange' : function(){
+  let testArray = [3,4,5] 
+  splice(testArray ,0 ,0 ,1 ,2 )
+  eq(testArray[0] , 1)
+  eq(testArray[1] , 2)
+  eq(testArray[2] , 3)
+  eq(testArray[3] , 4)
+  eq(testArray[4] , 5)
+},
+})
+
+
+
+
+
+
+
+
+
+
+</script>

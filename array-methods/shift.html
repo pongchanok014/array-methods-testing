@@ -1,5 +1,9 @@
-<script src="/tinytest.js"></script>
+<script src="../tinytest.js"></script>
 <script>
+  
+  'use strict'
+
+  //tested 6 success 6
 
 // Target
 // The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.
@@ -15,15 +19,6 @@ if (firstElementValue === undefined) {
 return array.splice(firstElementIndex,1)
 }
 
-function shiftWhileLoop(array) {
-  let whileLoopReturnedArray = [];
-
-  while( (i = array.shift()) !== undefined ) {
-    whileLoopReturnedArray.push(i)
-}
-return whileLoopReturnedArray;
-}
-
 
 
 //arr.shift()
@@ -34,7 +29,7 @@ return whileLoopReturnedArray;
 //4. It should return undefined if the array is empty.
 //5. If no length, remove last in a series of consecutive
 //6. It should be used with while loop to remove the next element from an array until it is empty.
-//7. It should be used with call and apply to objects resembling arrays.
+
 
 tests({
 
@@ -65,12 +60,7 @@ tests({
   let shiftReturnedValue = shift(testArray)
   eq(shiftReturnedValue, undefined)
 },
-'6. It should be used with while loop to remove the next element from an array until it is empty.' : function() {
-  let testArray = [1,2,3,4]
-  let shiftWhileLoopReturnedValue = shiftWhileLoop(testArray)
-  eq(shiftWhileLoopReturnedValue.length, 4)
-  eq(Array.isArray(shiftWhileLoopReturnedValue), true)
-},
+
 })
 
 </script>

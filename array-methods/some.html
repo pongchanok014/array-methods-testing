@@ -1,0 +1,154 @@
+<script src="../tinytest.js"></script>
+<script>
+
+"use strict"
+
+//tested 15 successs 15
+
+//Prototype function
+
+function some(array, callback, optionalThis) {
+  let someCallback = callback 
+  let arrayLength = array.length
+
+  if (optionalThis){
+    someCallback = callback.bind(optionalThis);
+  }
+
+  for(let i = 0 ; i < arrayLength ; i++){
+    if (i in array){
+      if (someCallback(array[i], i, array))
+        return true;
+    }
+  }
+  return false;
+};
+
+
+//Requirement
+//1.It should run the callback for each element in the array.
+//2.It should pass in the current element as the first argument to the callback.
+//3.It should pass in index as the second argument to the callback.'
+//4.It should pass in the original array as the third argument to the callback
+//5.It should exit immediatly if finds a truthy value
+//6.If not finds such a truthy , return false
+//7.It should invoked only for indexes of the array with assigned values , not for unassigned or deleted value;
+//8.It should accept optional this
+//9.If no this is provided, return undefined
+//10.It should not mutate the array being called
+//11.It should set the range of elements processed by some() before the first invocation of callback.
+//12.It should not visit elements appended to the array after the callback begins
+//13.If an existing of the array is changed by callback, its value passed will be the value at the time that some() visits that element's index
+//14. It should not visit elements that are deleted after callback has called
+//15. If empty array is provided some() should return false.'
+
+tests({
+
+  '1.It should run the callback for each element in the array.' : function(){
+    let timesFnHasRun = 0;
+    some([1, 2, 3], function(){
+      timesFnHasRun++;
+    })
+    eq(timesFnHasRun, 3);
+  },
+  '2.It should pass in the current element as the first argument to the callback.' : function(){
+    some([1], function(indexOfElement){
+      eq(indexOfElement, 1)
+    })
+  },
+  '3.It should pass in index as the second argument to the callback.' : function(){
+    some([1], function(indexOfElement, index){
+    eq(index, 0);
+    })
+  },
+  '4.It should pass in the original array as the third argument to the callback' :   function() {
+    let testArray = [1, 2, 3]
+    find(testArray, function(number, index, array){
+    eq(testArray, array);
+  })
+},
+  '5.It should exit immediatly if finds a truthy value' : function(){
+    let timesFnHasRun = 0
+    some([1, 2, 3], function(indexOfElement){
+      timesFnHasRun++;
+      return indexOfElement > 1      
+    })
+    eq(timesFnHasRun, 2)
+  },
+  '6.If not finds such a truthy , return false' : function(){
+     let someReturnValue = some([-1, -2, -3], function(indexOfElement){
+      return indexOfElement > 0      
+    })
+    eq(someReturnValue, false)
+  },
+  '7.It should invoked only for indexes of the array with assigned values , not for unassigned or deleted value' : function(){
+    let timesFnHasRun = 0;
+    let someReturnValue = some([1, , 2, , 3], function(indexOfElement){
+      timesFnHasRun++       
+    })
+    eq(timesFnHasRun , 3)
+  },
+  '8.It should accept optional this' : function(){
+      some([1], function(){
+        eq(this.description, 'I should be accessed by this')
+      },{description : 'I should be accessed by this'})
+  },
+  '9.If no this is provided, return undefined' : function(){
+      some([1], function(){
+        eq(this, undefined)
+      });
+  },
+  '10.It should not mutate the array being called' : function(){
+    some([1, 2, 3], function(indexOfElement, index, array){
+    eq(array[0], 1 );
+    })
+  },
+  '11.It should set the range of elements processed by some() before the first invocation of callback.' : function(){
+    let timesFnHasRun = 0;
+    some([1, 2, 3], function(indexOfElement, index, array){
+      timesFnHasRun++;
+      array.push(4);
+    })
+    eq(timesFnHasRun, 3);
+  },
+  '12.It should not visit elements appended to the array after the callback begins' : function(){
+    let timesFnHasRun = 0;
+    let someResultValue = some([1, 2, 3], function(indexOfElement, index, array){
+      timesFnHasRun++;
+      array.push(4);
+      return indexOfElement > 3; // set condition to check if it visits elements appended or not
+    })
+    eq(someResultValue, false);
+    eq(timesFnHasRun , 3)
+  },
+  '13.If an existing of the array is changed by callback, its value passed will be the value at the time that some() visits that index' : function(){
+    let timesFnHasRun = 0;
+    let someResultValue = some([1, 2, 3], function(indexOfElement, index, array){
+      timesFnHasRun++;
+      array[2] = 0;
+      return indexOfElement > 2
+    })
+    eq(someResultValue, false );
+    eq(timesFnHasRun, 3)
+  },
+  
+  '14. It should not visit elements that are deleted after callback has called' : function(){
+    let timesFnHasRun = 0;
+    let someResultValue = some([1, 2, 3], function(indexOfElement, index, array){
+      timesFnHasRun++;
+      array.splice(2, 1);
+      return indexOfElement > 2
+    })
+    eq(timesFnHasRun, 2);
+    eq(someResultValue, false)
+  },
+
+  '15.If empty array is provided some() should return false.' : function(){
+    let someResultValue = some([] , function(){
+      eq(someResultValue, false)
+    })
+  }
+})
+
+
+</script>

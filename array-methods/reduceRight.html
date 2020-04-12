@@ -1,0 +1,212 @@
+<script src="../tinytest.js"></script>
+<script>
+
+ 'use strict'
+
+ //tested 15 success 15
+
+  // Prototype Implementation.
+// function reduce(array, callback, startingValue) {
+//   let resultSoFar = startingValue;
+//   for (let i = 0 ; i < array.length ; i++) {
+//     resultSoFar = callback(resultSoFar, array[i], i, array)
+//   }
+//   return resultSoFar
+// }
+
+
+//reduceRight(arr , callback(previousValue, currentValue[, index[, array]])[, initialValue])
+
+// callback parameters:
+// previousValue
+// currentValue
+// currentIndex
+// array
+
+function reduceRight(array, callback, initialValue) {
+  let startingIndex = 0;
+  let resultSoFar = initialValue;
+  let arrayIndexes = Object.keys(array)
+  let length = array.length
+
+
+
+
+  //if no initial value
+  if (arguments.length < 3 ) {
+    resultSoFar = array[startingIndex]
+    startingIndex++;
+
+    if(arrayIndexes.length === 0) {
+      throw new TypeError('Reduce of empty array with no initial value');
+    }
+
+    if (arrayIndexes.length === 1) {
+      let onlyIndex = arrayIndexes[0];
+      let onlyElement = array[onlyIndex];
+      return onlyElement;
+    } 
+
+    //If no initialValue is provided, callback should run array.length-1 times.
+    for (let i = array.length - 1  ; startingIndex < i ; i--) { 
+      if (i in array) {
+        resultSoFar = callback(resultSoFar, array[i], i , array)
+    }
+    }
+    return resultSoFar
+
+
+
+
+    
+    } else { // if initial value
+      //if empty array
+      if(arrayIndexes.length === 0){
+        return initialValue
+    }
+    // if only one element 
+      if(arrayIndexes.length === 1){
+        for (let i = array.length  ; startingIndex < i ; i--) { 
+        resultSoFar = callback(resultSoFar, array[i], i, array)
+        }
+        return resultSoFar
+      }
+      //if two element
+      if (arrayIndexes.length === 2){
+      for (let i = array.length - 1  ; startingIndex < i ; i--){ 
+        if (i in array ) {
+          resultSoFar = callback(resultSoFar, array[i], i, array)
+        }
+        }
+        return resultSoFar
+      }
+    }
+  for (let i = array.length - 1  ; startingIndex <= i ; i--){ 
+        if (i in array ) {
+          resultSoFar = callback(resultSoFar, array[i], i, array)
+        }
+      }
+        return resultSoFar
+    
+
+  // if ()
+  // ///for (let i = array.length - 1  ; startingIndex <= i ; i--){ 
+  //   resultSoFar = callback(resultSoFar, array[i], i)
+  // }
+  // return resultSoFar
+
+  //If no initialValue is provided, callback should run array.length-1 times.
+  return resultSoFar
+
+}
+
+tests({
+
+'1.If initialValue, callback should run array.length times.': function () {
+  let timesFnHasRun = 0;
+  reduceRight([1], function(){
+    timesFnHasRun++
+  },1)
+  eq(timesFnHasRun, 1)
+},
+'2.If no initialValue is provided, callback should run array.length-1 times.' : function(){
+  let timesFnHasRun = 0;
+  reduceRight([1], function(){
+    timesFnHasRun++
+  })
+  eq(timesFnHasRun, 0)
+},
+'3.If initialValue is provided, previousValue should start with InitialValue.' : function(){
+  reduceRight([1], function(previousValue){
+  eq(previousValue, 0)
+  },0)
+},
+
+'4.If initialValue is provided, currentValue should start with array[1].' : function(){
+  reduceRight([1,2], function(previousValue, currentValue){
+    eq(currentValue, 2) // still return 2 (array[1])
+  },0)
+},
+'5.If initialValue is provided, callback will start at index 1.' : function(){
+  reduceRight([1, 2], function(previousValue, currentValue, currentIndex){
+    eq(currentIndex, 1) // return 1 (i = 1)
+  },0)
+},
+
+
+
+'6.If no initialValue, previousValue should start at array[1] (the last value in the array)' : function(){
+  reduceRight([1, 2], function(previousValue){
+  eq(previousValue, 2)
+  })
+},
+'7.If no initialValue, currentValue should start at array[1](second-to-last value)' : function(){
+  reduceRight([1, 2], function(previousValue, currentValue){
+  eq(currentValue, 1)
+  })
+},
+'8.If no initialValue, callback will start at index 1(second-to-last index).' : function(){
+  reduceRight([1, 2], function(previousValue, currentValue , currentIndex){
+  eq(currentIndex, 1)
+  })
+},
+
+
+'9.If initialValue and array is empty, return initialValue without calling callback.' : function(){
+  let timesFnHasRun = 0;
+  let initialValue = 0;
+  let reduceRightResult = reduceRight([], function(){
+    timesFnHasRun++;
+  },initialValue)
+  eq(reduceRightResult, initialValue);
+  eq(timesFnHasRun, 0);
+},
+'10.If no initialValue and array has only one element, return tgat one element without calling callback ' : function(){
+  let timesFnHasRun = 0;
+  let reduceRightResult = reduceRight([1], function(previousValue){
+    timesFnHasRun++
+  })
+  eq(timesFnHasRun, 0)
+  eq(reduceRightResult , 1)
+},
+
+'11.It should actually reduceRight' : function(){
+  let resultOfSum = reduceRight([1,2,3] , function(a,b) {
+    return a + b
+  },0)
+  eq(resultOfSum, 6)
+},
+'12.If initialValue, it should exclude holes.' : function(){
+  let resultOfSum = reduceRight([1, ,2 , ,3] , function(a,b) {
+    return a + b
+  },0)
+  eq(resultOfSum, 6)
+},
+'13.If no initialValue, it should exclude holes too.' : function(){
+  let resultOfSum = reduceRight([1, ,2 , ,3] , function(a,b) {
+    return a + b
+  })
+  eq(resultOfSum, 6)
+},
+'14.If the array is empty and no initialValue , throw TypeError' : function(){
+  let isTypeError = false;
+    try {
+      reduceRight([], function() {});
+    } catch(e) {
+      isTypeError = (e instanceof TypeError);
+    }
+    eq(isTypeError, true);
+},
+'15.It should pass array as fourth argument to callback' : function(){
+  let testArray = [3,4]
+  reduceRight([1, 2], function(previousValue, currentValue , currentIndex , arrayToRuduceRight){
+  eq(arrayToRuduceRight, testArray)
+  })
+},
+})
+
+
+
+
+
+</script>

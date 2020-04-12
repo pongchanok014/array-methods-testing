@@ -1,11 +1,15 @@
-<script src="/tinytest.js"></script>
+<script src="../tinytest.js"></script>
 <script>
+
+"use strict"
+
+//Status 
+//tested 11 success 11
 
 //The copyWithin() method shallow copies part of an array to another location in the same array and returns it without modifying its length.
 
 
 //arr.copyWithin(target[, start[, end]])
-
 
 
 //Prototype Function
@@ -55,29 +59,23 @@ for (; startCopyingIndex < endCopyingIndex ; startCopyingIndex++ , target++ ) {
 return array
 }
 
-
 //Parameters
 // target
 // start
 // end
 
-
 //Return value
 //The modified array.
 
-
-//requirement
+//Requirement
 //1. it should change part of the array to another location in place without modifying arrays length.
-
 //2. if target , it should start changing at target's index
 //3. if target is negetive, it should be counted from the end (arr.length + target)
 //4. If target is at or greater than arr.length, nothing will be copied.
 //5. If target is positioned after start, the copied should start at startToIndex , begin element at target , and end at arr.length
-
 //6.if start, it should start copying element from startCopyingIndex 
 //7.if start is negetive , startCopyingIndex should be counted from the end. (arr.length + indexToStart)
 //8. if no start, startCopyingIndex should equal to index 0
-
 //9.if end, it should end copying up to but not including end
 //10. if end is negative, it should be counted from the end (arr.length + indexToEnd)
 //11 if no end , copy should be applied until the last index(arr.length)

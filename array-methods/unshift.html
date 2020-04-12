@@ -1,5 +1,9 @@
-<script src="/tinytest.js"></script>
+<script src="../tinytest.js"></script>
 <script>
+
+  'use strict'
+
+  //tested 3 success 3
 
 // The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.
 
@@ -11,7 +15,7 @@
 function unshift(array) {
   let indexToStart = 0;
 
-for (i = arguments.length - 1; 0 < i ; i--) { 
+for (let i = arguments.length - 1; 0 < i ; i--) { 
   // arguments - 1 because it also applies zero-based numerical properties
   array.splice(indexToStart , 0 , arguments[i])
 }

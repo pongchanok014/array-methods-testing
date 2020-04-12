@@ -1,0 +1,154 @@
+<script src="../tinytest.js"></script>
+<script>
+  'use strict'
+
+  //tested 13 success 13
+
+//prototype 
+// function findIndex(array, callback, optionalThis) {
+//   let findIndexCallback = callback
+//   let length = array.length
+
+//   if (optionalThis) {
+//     findIndexCallback = callback.bind(optionalThis)
+//   } 
+
+//   for (let i = 0 ; i < length ; i++) {
+//       if (findIndexCallback(array[i], i, array))
+//       return i ;
+//     }
+//   return -1;
+// }
+
+function findIndex(array, callback, optionalThis) {
+  let findIndexCallback = callback
+  let length = array.length
+
+  if (optionalThis) {
+    findIndexCallback = callback.bind(optionalThis)
+  } 
+
+  for (let i = 0 ; i < length ; i++) {
+      if (findIndexCallback(array[i], i, array))
+      return i ;
+    }
+  return -1;
+}
+
+//requirement
+//1.It should run the callback for each element in the array.
+//2.It should pass in the current element as the first argument to the callback.
+//3.It should pass in index as the second argument to the callback.
+//4.It should accept an optional this as the thrid argument to the callback.
+//5.if no this , return undefined
+//6.if it finds one where callback return true, it should return the index of that element. 
+//7.if not find one that match the reqirement it should return -1.
+//8.It should not invorked for indexes which have never been assigned values.
+//9.It should set the range of elements being processed before the first callback
+//10.It should not process the elements appended to the array after the call
+//11.If existing elementt is changed by callback, its value passed to the callback will be the value at the time findIndex() visits the element's index.
+
+
+tests({
+
+'1.It should run the callback for each element in the array.' : function() {
+  let numOfTimesCallbackHasRun = 0
+  findIndex([1, 2, 3], function(){
+    numOfTimesCallbackHasRun++;
+  })
+  eq(numOfTimesCallbackHasRun , 3)
+},
+'3.It should pass in the current element as the first argument to the callback.' : function() {
+  findIndex([1], function(element){
+  eq(element , 1)
+  })
+},
+'3.It should pass in index as the second argument to the callback.' : function() {
+  findIndex([1], function(element, index){
+  eq(index , 0)
+  })
+},
+
+'4.It should pass the array as the thrid argument to the callback.' : function(){
+  let testArray = [1, 2, 3]
+  findIndex(testArray, function(element, index, array){
+    eq(testArray, array)
+  })
+},
+
+'5.It should accept an optional this' : function() {
+  findIndex([1], function(){
+  eq(this.description , 'I should be accessed by this in the callback')
+  }, {description : 'I should be accessed by this in the callback'})
+},
+'6.if no this , return undefined' : function() {
+ findIndex([1], function(){
+  eq(this, undefined);
+  })
+},
+'7.if it finds one where callback return true, it should return the index of that element. ' : function() {
+  let numOfTimesCallbackRun = 0;
+  let findIndexReturnedValue = findIndex([1, 2, 3], function(num) {
+    numOfTimesCallbackRun++
+    return num > 2;
+  })
+  eq(numOfTimesCallbackRun, 3)
+  eq(findIndexReturnedValue, 2)
+},
+'8.if not find one that match the reqirement it should return -1.' : function() {
+  let findIndexReturnedValue = findIndex([1, 2, 3], function(num) {
+    return num > 3;
+  })
+  eq(findIndexReturnedValue, -1)
+},
+'9.It should return -1 if an empty array is provided.' : function() {
+  let findIndexReturnedValue = findIndex([], function(num) {
+    return num > 3;
+  })
+  eq(findIndexReturnedValue, -1)
+},
+
+'10.It should not invorked for indexes which have never been assigned values.' : function() {
+  let numOfTimesCallbackRun = 0;
+  let findIndexReturnedValue = findIndex([ , , 3], function(element){
+    numOfTimesCallbackRun++
+    return element > 2
+  })
+  eq(numOfTimesCallbackRun, 3)
+  eq(findIndexReturnedValue, 2)
+},
+'11.It should set the range of elements being processed before the first callback' : function() {
+  let numOfTimesCallbackHasRun = 0;
+    let returnValue = findIndex([1, 2, 3], function(element, index, array){
+    numOfTimesCallbackHasRun++
+  if (index === 0) {
+    array.push(4);// adding an if statement so it would try to add to the array the element 4 only one time.
+  }    
+})
+    eq(numOfTimesCallbackHasRun, 3);
+    eq(returnValue, -1);
+},
+'12.It should not process the elements appended to the array after the call' : function() {
+
+  let numOfTimesCallbackRun = 0;
+  findIndex([1, 2, 3], function(element, index, array){
+    numOfTimesCallbackRun++
+    array.push(4)
+  })
+  eq(numOfTimesCallbackRun, 3)
+},
+"13.If existing elementt is changed by callback, its value passed to the callback will be the value at the time findIndex() visits the element's index." : function() {
+  debugger
+  let numOfTimesCallbackHasRun = 0;
+  let returnValue = findIndex([-1, -2, -3], function(element, index, array){
+    numOfTimesCallbackHasRun++;
+    array[1] = 1;
+    return element > 0
+  }); 
+  eq(numOfTimesCallbackHasRun, 2)
+  eq(returnValue, 1)
+}
+
+})
+
+</script>

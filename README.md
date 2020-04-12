@@ -17,7 +17,7 @@ Iterators:
 -   [x] Array.prototype.findIndex()
 -   [x] Array.prototype.every()
 -   [x] Array.prototype.some()
--   [ ] Array.prototype.reduceRight()
+-   [x] Array.prototype.reduceRight()
 
 Accessors:
 
@@ -35,10 +35,10 @@ Mutators
 -   [x] Array.prototype.shift()
 -   [x] Array.prototype.unshift()
 -   [x] Array.prototype.fill()
--   [a][ ] Array.prototype.reverse()
--   [ ] Array.prototype.copyWithin()
--   [ ] Array.prototype.sort()
--   [ ] Array.prototype.splice()
+-   [x] Array.prototype.reverse()
+-   [x] Array.prototype.copyWithin()
+-   [x] Array.prototype.sort()
+-   [x] Array.prototype.splice()
 
 ## Getting Started
 

@@ -1,5 +1,9 @@
-<script src="/tinytest.js"></script>
+<script src="../tinytest.js"></script>
 <script>
+
+'use strict'
+
+//tested 14 success 14
 
 // Target
 // The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included) where begin and end represent the index of items in that array. The original array will not be modified.
@@ -34,7 +38,7 @@ if (indexToStart < 0){
   indexToEnd  = length
   }
 
-  for (i = indexToStart  ; i < indexToEnd ; i++){
+  for (let i = indexToStart  ; i < indexToEnd ; i++){
     sliceReturnArray.push(array[i])
   }
     return sliceReturnArray

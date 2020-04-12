@@ -1,0 +1,99 @@
+<script src="../tinytest.js"></script>
+<script>
+
+  'use struct'
+
+  //tested 5 success 5
+
+//Target
+//The forEach() method executes a provided function once for each array element.
+
+// Example 1:
+// forEach([1, 2, 3], function() {
+//         console.log('hi');
+//});
+
+// Example 2:
+// forEach([1, 2, 3], function(number) {
+//         console.log(number);
+//});
+
+// Example 3:
+// forEach([1, 2, 3], function(number, index) {  
+//  console.log(index);
+//});
+
+//Example 4:
+// forEach([1, 2, 3], function(number, index, originalArray) {  
+//  console.log(originalArray);
+//});
+
+
+//Requirement
+// 1.It should run the callback function array.length times.
+// 2.It should pass in the ith element as the first argument to the callback
+// 3.It should pass in ith position as the second argument to the callback.
+// 4.It should pass in the original array as the third argument to the callback.
+// 5.It should accept an optional this object
+
+// Parameters
+// callback
+// currentValue
+// array 
+// thisArg 
+
+
+function forEach(array , callback, optionalThisObject) {
+  let forEachCallback = callback;
+
+  if (optionalThisObject) {
+    forEachCallback = callback.bind(optionalThisObject);
+  }
+
+  for (let i = 0 ; i < array.length ; i++) {
+    forEachCallback(array[i], i, array);
+  }
+}
+
+
+tests({
+  '1.It should run the callback function array.length times.': function() {
+    let numberOfTimesCallbackHasRun = 0;
+            //array     //callback function
+      forEach([1, 2, 3], function() {
+        numberOfTimesCallbackHasRun++;
+    });
+  eq(numberOfTimesCallbackHasRun, 3);    
+  },
+
+  //currentValue
+  '2.It should pass in the ith element as the first argument to the callback': function() {
+    forEach([1], function(number) {
+      eq(number, 1);
+    });
+  },
+
+  //index
+  '3.It should pass in ith position as the second argument to the callback.': function(){ 
+    forEach([1], function(number, index) {       
+      eq(index, 0);
+    });
+  },
+  
+  //array
+  '4.It should pass in the original array as the third argument to the callback.': function() {
+    let testArray = [1, 2, 3];
+    forEach(testArray, function(number, index, originalArray) { 
+      eq(originalArray , testArray);
+    });   
+  },
+  // optional 'this'
+  '5.It should accept an optional this object' : function(){
+    forEach([1], function(){
+      eq(this.description, 'I should be accessible inside of the callback')
+    }, {description: 'I should be accessible inside of the callback'});
+  }
+});
+</script>
+
+
